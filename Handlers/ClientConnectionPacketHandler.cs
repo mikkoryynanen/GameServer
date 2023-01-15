@@ -1,4 +1,5 @@
-using System.Collections.Generic;
+using System;
+using GameSever.Services.Connection;
 using Shared.Packets.Connection;
 using Shared.Packets.Core.Handlers;
 
@@ -6,11 +7,16 @@ namespace GameSever.Handlers
 {
     public class ClientConnectionPacketHandler : PacketHandlerBase<ClientConnectionPacket>
     {
-        private Dictionary<byte, string> _connectedClients = new Dictionary<byte, string>();
+        private readonly IConnectionService _connectionService;
 
+        public ClientConnectionPacketHandler(IConnectionService connectionService)
+        {
+            _connectionService = connectionService;
+        }
+        
         protected override void Handle(ClientConnectionPacket packet)
         {
-            _connectedClients.Add((byte)_connectedClients.Count, packet.ClientId);
+            Console.WriteLine(packet);
         }
     }
 }

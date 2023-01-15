@@ -1,4 +1,5 @@
 ﻿using GameSever.Services.ClientPosition;
+using GameSever.Services.PlayerData;
 using GameSever.Utils;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,6 +14,7 @@ namespace GameSever
 
             var serviceProvider = new ServiceCollection()
                 .AddSingleton<IClientPositionService, ClientPositionService>()
+                .AddSingleton<IPlayerDataService, PlayerDataService>()
                 .BuildServiceProvider();
 
             var server = new Server(serviceProvider);

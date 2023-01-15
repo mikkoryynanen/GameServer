@@ -1,8 +1,11 @@
 using System;
 using ENet;
 using GameSever.Handlers;
+using GameSever.Handlers.PlayerData;
 using GameSever.Handlers.Position;
 using GameSever.Services.ClientPosition;
+using GameSever.Services.Connection;
+using GameSever.Services.PlayerData;
 using GameSever.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Packets.Core;
@@ -17,10 +20,12 @@ namespace GameSever
             Library.Initialize();
 
             var packetProcessor = new PacketProcessor();
-            packetProcessor.AddHandler(new ClientConnectionPacketHandler());
+            // packetProcessor.AddHandler(new ClientConnectionPacketHandler(serviceProvider.GetService<IConnectionService>()));
             packetProcessor.AddHandler(new Position2DPacketHandler(serviceProvider.GetService<IClientPositionService>()));
             
             using (Host server = new Host()) {
+                packetProcessor.AddHandler(new PlayerDataPacketHandler(serviceProvider.GetService<IPlayerDataService>(), server));
+                
                 Address address = new Address();
 
                 var envVariables = EnvironmentParameters.GetEnvironmentVariables();
@@ -52,6 +57,9 @@ namespace GameSever
 
                             case EventType.Connect:
                                 Console.WriteLine("Client connected - ID: " + netEvent.Peer.ID + ", IP: " + netEvent.Peer.IP);
+
+                                ConnectionService.AddPeer(netEvent.Peer);
+                                
                                 break;
 
                             case EventType.Disconnect:

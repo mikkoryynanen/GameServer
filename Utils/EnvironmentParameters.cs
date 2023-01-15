@@ -8,6 +8,11 @@ namespace GameSever.Utils
     {
         public ushort Port;
         public int MaxClients;
+
+        public string MySqlServer;
+        public string MySqlUserId;
+        public string MySqlPassword;
+        public string MySqlDatabase;
     }
     
     public class EnvironmentParameters
@@ -24,7 +29,12 @@ namespace GameSever.Utils
                 return new EnvironmentVariables
                 {
                     Port = ushort.Parse(DotNetEnv.Env.GetString("Port")),
-                    MaxClients = int.Parse(DotNetEnv.Env.GetString("MaxClients"))
+                    MaxClients = int.Parse(DotNetEnv.Env.GetString("MaxClients")),
+                    
+                    MySqlServer = DotNetEnv.Env.GetString("MySqlServer"),
+                    MySqlUserId = DotNetEnv.Env.GetString("MySqlUserId"),
+                    MySqlPassword = DotNetEnv.Env.GetString("MySqlPassword"),
+                    MySqlDatabase = DotNetEnv.Env.GetString("MySqlDatabase")
                 };
             }
             catch (ArgumentException e)
