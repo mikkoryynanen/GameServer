@@ -1,10 +1,8 @@
-using System;
 using ENet;
 using GameSever.Services.Connection;
 using GameSever.Services.PlayerData;
 using Shared.Packets.Core.Handlers;
 using Shared.Packets.PlayerData;
-using Shared.Serializer;
 
 namespace GameSever.Handlers.PlayerData
 {
@@ -24,7 +22,7 @@ namespace GameSever.Handlers.PlayerData
             var items = _playerDataService.GetItems(packet.PlayerId);
             
             Packet enetPacket = default(Packet);
-            byte[] data = Serializer.Serialize(new PlayerInventoryResponse { Items = items });
+            byte[] data = Serializer.Serializer.Serialize(new PlayerInventoryResponse { Items = items });
             enetPacket.Create(data, PacketFlags.Reliable);
 
             Peer peer = ConnectionService.GetPeer(packet.PlayerId);

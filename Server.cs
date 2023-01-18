@@ -9,7 +9,6 @@ using GameSever.Services.PlayerData;
 using GameSever.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Packets.Core;
-using Shared.Serializer;
 
 namespace GameSever
 {
@@ -76,7 +75,7 @@ namespace GameSever
                                 byte[] buffer = new byte[netEvent.Packet.Length];
                                 netEvent.Packet.CopyTo(buffer);
                                 
-                                IPacket deserializedPacket = Serializer.Deserialize<IPacket>(buffer);
+                                IPacket deserializedPacket = Serializer.Serializer.Deserialize<IPacket>(buffer);
                                 packetProcessor.Process(deserializedPacket);
                                 
                                 netEvent.Packet.Dispose();
